@@ -2,14 +2,14 @@
 
 clear 
 %% Set channel names
-% emgnames={'deltant', 'deltmed', 'deltpost', 'biceps', 'triceps', 'uptrap'...
-%     , 'pect', 'ssp', 'isp', 'subs'}; %THIS IS THE GOOD CONVENTION
+ emgnames={'deltant', 'deltmed', 'deltpost', 'biceps', 'triceps', 'uptrap'...
+     , 'pect'};%, 'ssp', 'isp', 'subs'}; %THIS IS THE GOOD CONVENTION
 
-emgnames={'antdelt', 'meddelt', 'postdelt', 'biceps', 'triceps', 'uptrap'};%...
-%     , 'pect', 'ssp', 'isp', 'subs'};
+% emgnames={'antdelt', 'meddelt', 'postdelt', 'biceps', 'triceps', 'uptrap'};%...
+% %     , 'pect', 'ssp', 'isp', 'subs'}; % for pilote 1
 
 %triggername={'glove'};
-triggernames={'D2', 'MC2'};
+triggernames={'gloves_1', 'gloves_2'};
 
 %% Import generic paths
 GenericPath_EN
@@ -18,11 +18,11 @@ GenericPath_EN
 [~,Alias.pseudo,~]=xlsread([Path.ExpertNovice, 'participants.xlsx'],...
     'Information participant', 'E5:E100');
 
-for isujet = 1%length(Alias.pseudo):-1:1
+for isujet = 3%length(Alias.pseudo):-1:1
     
     SubjectPath_EN
     
-    trialnames=dir(Path.importdata); 
+    trialnames=dir(Path.importfatigue); 
     trialnames = arrayfun(@(x) x.name, trialnames,'UniformOutput',false);
     trialnames=trialnames(strncmp(trialnames, 'l_',2) | strncmp(trialnames, 'm_',2) | strncmp(trialnames, 's_',2));
     
@@ -31,7 +31,7 @@ for isujet = 1%length(Alias.pseudo):-1:1
         disp(['Processing Subject #', num2str(isujet), ': ', Alias.pseudo(isujet), ', Trial # ',...
             num2str(itrial), '/', num2str(length(trialnames))])
         % Import analog data and get channel names
-        input=btkReadAcquisition(([Path.importdata, char(trialnames(itrial))]));
+        input=btkReadAcquisition(([Path.importfatigue, char(trialnames(itrial))]));
         analogue=btkGetAnalogs(input);
         
         
@@ -45,8 +45,8 @@ for isujet = 1%length(Alias.pseudo):-1:1
         data(itrial).subjectname=Alias.pseudo(isujet);
         data(itrial).trialname=trialnames(itrial);
         
-        triggeridx=find(strncmp(inputnames,char(triggernames(2)),length(char(triggernames(2)))))';
-        triggeridx=[triggeridx, find(strncmp(inputnames,char(triggernames(1)),length(char(triggernames(1)))))']; % À retirer lorsque le triggername sera unique (glove)
+        triggeridx=find(strncmp(inputnames,char(triggernames(1)),length(char(triggernames(1)))))';
+        triggeridx=[triggeridx, find(strncmp(inputnames,char(triggernames(2)),length(char(triggernames(2)))))']; % À retirer lorsque le triggername sera unique (glove)
 
         data(itrial).trigger=cell2mat(arrayfun(@(x) (analogue.(char(inputnames(x)))),triggeridx,'UniformOutput',false));    
 

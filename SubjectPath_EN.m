@@ -6,6 +6,7 @@ if Path.machinetype == 1 % If PC: backslashes
     Path.pathModel  = [Path.DirModels 'Model.s2mMod'];
     % Dossier des data
     Path.importdata = [Path.importRaw Alias.pseudo{isujet}, '\'];
+    Path.importfatigue = [Path.importdata 'fatigue\'];
 
     % Dossiers d'exportation
     Path.exportPath = [Path.ServerAddressE '\Projet_IRSST_LeverCaisse\Jason\data\' Alias.sujet{isujet} '\'];
@@ -45,6 +46,8 @@ elseif Path.machinetype == 2 % If MAC: forward slashes
     Path.pathModel  = [Path.DirModels 'Model.s2mMod'];
     % Dossier des data
     Path.importdata = [Path.importRaw Alias.pseudo{isujet}, '/'];
+        Path.importfatigue = [Path.importdata 'fatigue/'];
+
 
     % Dossiers d'exportation
     Path.exportPath = [Path.ServerAddressE '/Projet_ExpertsNovices/Jason/data/' Alias.pseudo{isujet} '/'];
