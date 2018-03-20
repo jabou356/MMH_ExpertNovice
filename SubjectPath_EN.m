@@ -1,35 +1,42 @@
 if Path.machinetype == 1 % If PC: backslashes
-%% Chemin des fichiers
+%% Chemin des fichiers d'importation
     % Dossier du sujet
-    Path.DirModels  = [Path.ServerAddressF '\Data\Shoulder\Lib\' Alias.sujet{isujet} 'd\Model_2\'];
+    Path.DirModels  = [Path.ServerAddressF '\Data\Shoulder\Lib\' Alias.pseudo{isujet} 'd\Model_2\'];
     % Dossier du modèle pour le sujet
     Path.pathModel  = [Path.DirModels 'Model.s2mMod'];
     % Dossier des data
-    Path.importdata = [Path.importRaw Alias.pseudo{isujet}, '\'];
+	
+    Path.importdata = [Path.importRaw Alias.date{isujet}, '\' Alias.pseudo{isujet}, '\'];
     Path.importfatigue = [Path.importdata 'fatigue\'];
+	
 
-    % Dossiers d'exportation
-    Path.exportPath = [Path.ServerAddressE '\Projet_IRSST_LeverCaisse\Jason\data\' Alias.sujet{isujet} '\'];
+	
+	%% Dossiers d'exportation OpenSim, if those folder, don't exist, create them
+    % Dossier général
+	Path.OSIMexportPath = [Path.OSIMPath, Alias.pseudo{isujet} '\'];
     
-    if isdir(Path.exportPath)==0
-        mkdir(Path.exportPath);
-    end
+    if isdir(Path.OSIMexportPath)==0
+        mkdir(Path.OSIMexportPath);
+	end
     
-    Path.TRCpath=[Path.exportPath,'TRC\'];
+	% Dossier .trc (marqueurs)
+    Path.TRCpath=[Path.OSIMexportPath,'TRC\'];
     if isdir(Path.TRCpath)==0
         mkdir(Path.TRCpath);
-    end
+	end
     
-    Path.IKpath=[Path.exportPath,'IKOSIM\'];
+	% Dossier .mot (Qs)
+    Path.IKpath=[Path.OSIMexportPath,'IKOSIM\'];
     Path.IKresultpath=[Path.IKpath,'result\'];
     Path.IKsetuppath=[Path.IKpath,'setup\'];
     if isdir(Path.IKpath)==0
         mkdir(Path.IKpath);
         mkdir(Path.IKresultpath);
         mkdir(Path.IKsetuppath);
-    end
+	end
     
-    Path.MDpath=[Path.exportPath,'MuscleDirection\'];
+	% Dossier muscle direction
+    Path.MDpath=[Path.OSIMexportPath,'MuscleDirection\'];
     Path.MDresultpath=[Path.MDpath,'result\'];
     Path.MDsetuppath=[Path.MDpath,'setup\'];
     if isdir(Path.MDpath)==0
@@ -39,38 +46,44 @@ if Path.machinetype == 1 % If PC: backslashes
     end
     
 elseif Path.machinetype == 2 % If MAC: forward slashes
-    %% Chemin des fichiers
+    %% Chemin des fichiers d'importation
     % Dossier du sujet
     Path.DirModels  = [Path.ServerAddressF '/Data/Shoulder/Lib/' Alias.pseudo{isujet} 'd/Model_2/'];
-    % Dossier du modèle pour le sujet
+   
+	% Dossier du modèle pour le sujet
     Path.pathModel  = [Path.DirModels 'Model.s2mMod'];
-    % Dossier des data
-    Path.importdata = [Path.importRaw Alias.pseudo{isujet}, '/'];
-        Path.importfatigue = [Path.importdata 'fatigue/'];
+	
+    % Dossier des data brutes
+	Path.importdata = [Path.importRaw Alias.date{isujet}, '\' Alias.pseudo{isujet}, '\'];
+	Path.importfatigue = [Path.importdata 'fatigue/'];
 
 
-    % Dossiers d'exportation
-    Path.exportPath = [Path.ServerAddressE '/Projet_ExpertsNovices/Jason/data/' Alias.pseudo{isujet} '/'];
-    
-    if isdir(Path.exportPath)==0
-        mkdir(Path.exportPath);
-    end
-    
-    Path.TRCpath=[Path.exportPath,'TRC/'];
+    %% Dossiers d'exportation OPENSIM, si le dossier n'existe pas, crée le
+	% Dossier général
+    Path.OSIMexportPath = [Path.OSIMPath, Alias.pseudo{isujet} '/'];
+  
+    if isdir(Path.OSIMexportPath)==0
+        mkdir(Path.OSIMexportPath);
+	end
+	
+    % Dossier .trc (marqueurs)
+    Path.TRCpath=[Path.OSIMexportPath,'TRC/'];
     if isdir(Path.TRCpath)==0
         mkdir(Path.TRCpath);
-    end
+	end
     
-    Path.IKpath=[Path.exportPath,'IKOSIM/'];
+	% Dossier .mot (Qs)
+    Path.IKpath=[Path.OSIMexportPath,'IKOSIM/'];
     Path.IKresultpath=[Path.IKpath,'result/'];
     Path.IKsetuppath=[Path.IKpath,'setup/'];
     if isdir(Path.IKpath)==0
         mkdir(Path.IKpath);
         mkdir(Path.IKresultpath);
         mkdir(Path.IKsetuppath);
-    end
+	end
     
-    Path.MDpath=[Path.exportPath,'MuscleDirection/'];
+	% Dossier muscle direction
+    Path.MDpath=[Path.OSIMexportPath,'MuscleDirection/'];
     Path.MDresultpath=[Path.MDpath,'result/'];
     Path.MDsetuppath=[Path.MDpath,'setup/'];
     if isdir(Path.MDpath)==0

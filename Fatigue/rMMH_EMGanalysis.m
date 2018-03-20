@@ -7,7 +7,7 @@ GenericPath_EN
 [~,Alias.pseudo,~]=xlsread([Path.ExpertNovice, 'participants.xlsx'],...
     'Information participant', 'E5:E100');
 
-for isujet = 1%length(Alias.pseudo):-1:1
+for isujet = 3%length(Alias.pseudo):-1:1
     
     %% For each trial, run EMG compute (filtering, RMS)
     load([Path.RepetitiveMMH, Alias.pseudo{isujet}, '.mat']);
@@ -16,10 +16,11 @@ for isujet = 1%length(Alias.pseudo):-1:1
 
     for itrial=1:length(data)
         
-        
+                disp(['Processing Subject #', num2str(isujet), ': ', Alias.pseudo(isujet), ', Trial # ',...
+num2str(itrial)])
         %% For each EMG channel, cut data to isolate moments when a box is handled from those when no box is handled
         %         for imuscle = 1:length(data(itrial).emgname)
-        for ibox=1:length(data(itrial).box(:,1))
+        for ibox=length(data(itrial).box(:,1)):-1:1
             data(itrial).cutemg(ibox).rmsEMGbox(:,:)=data(itrial).rmsEMG(data(itrial).box(ibox,1):data(itrial).box(ibox,2),:);
                         data(itrial).cutemg(ibox).prctemgbox=prctile(data(itrial).cutemg(ibox).rmsEMGbox(:,:),1:100,1);
 

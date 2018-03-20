@@ -14,26 +14,38 @@ Path.machinetype=menu('Are you working on a MAC or a PC?', 'PC','MAC');
 
 if Path.machinetype == 1 % If PC: backslashes
     
-    if isempty(strfind(path, [Path.ServerAddressE, '\Librairies\S2M_Lib\']))
-        % Librairie S2M
-        cd([Path.ServerAddressE '\Librairies\S2M_Lib\']);
-        S2MLibPicker;
-    end
+%     if isempty(strfind(path, [Path.ServerAddressE, '\Librairies\S2M_Lib\']))
+%         % Librairie S2M
+%         cd([Path.ServerAddressE '\Librairies\S2M_Lib\']);
+%         S2MLibPicker;
+%     end
     
     
-    %% Setup common data path
-    %Import raw data
-    Path.importRaw=[Path.ServerAddressF, '\Data\Shoulder\RAW\irssten\'];
-    
+    %% Setup common data path    
     % Project Path
     Path.ExpertNovice=[Path.ServerAddressE, '\Projet_ExpertsNovices\'];
+	
+	% Initial Paths
+	Path.ExcelPath=[Path.ExpertNovice, 'excel\'];
+	Path.importRaw=[Path.ExpertNovice, 'data\raw\'];
+	
+	
     % Processed data
     Path.ProcessedData=[Path.ExpertNovice, 'ElaboratedData\'];
-    Path.Matrices=[Path.ProcessedData, 'matrices\'];
-    Path.RepetitiveMMH=[Path.Matrices, 'RepetitiveMMH\'];
     
-    %% Setup common OpenSim paths
-    Path.OpensimSetupJB=[Path.ServerAddressE '\Projet_ExpertsNovices\Jason\OpenSimSetUpFiles\'];
+	Path.Matrices=[Path.ProcessedData, 'matrices\'];
+	Path.Fatigue=[Path.Matrices, 'Fatigue\'];
+    Path.RepetitiveMMH=[Path.Fatigue, 'RepetitiveMMH\'];
+	Path.StandardEMG=[Path.Fatigue, 'StandardEMG\'];
+	
+	Path.OSIMPath=[Path.ProcessedData, 'OpenSim\'];
+	
+	Path.GroupData=[Path.ProcessedData, 'GroupData\'];
+	Path.GroupFatigue = [Path.GroupData, 'Fatigue\'];
+	Path.GroupStandardEMG = [Path.GroupFatigue, 'StandardEMG\'];
+	  
+    % Setup common OpenSim paths
+    Path.OpensimSetupJB=[Path.OSIMPath, 'OpenSimSetUpFiles\'];
     Path.OpensimGenericModel=[Path.OpensimSetupJB,'GenericShoulderCoRAnatoJB.osim'];
     Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
     Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
@@ -41,26 +53,38 @@ if Path.machinetype == 1 % If PC: backslashes
     
 elseif Path.machinetype == 2 %if MAC: forward slashes
     
-    if isempty(strfind(path, [Path.ServerAddressE, '/Librairies/S2M_Lib/']))
-        % Librairie S2M
-        cd([Path.ServerAddressE '/Librairies/S2M_Lib/']);
-        S2MLibPicker;
-    end
+%     if isempty(strfind(path, [Path.ServerAddressE, '/Librairies/S2M_Lib/']))
+%         % Librairie S2M
+%         cd([Path.ServerAddressE '/Librairies/S2M_Lib/']);
+%         S2MLibPicker;
+%     end
     
     
     %% Setup common data path
-    %Import raw data
-    Path.importRaw=[Path.ServerAddressF, '/Data/Shoulder/RAW/irssten/'];
     
     % Project Path
     Path.ExpertNovice=[Path.ServerAddressE, '/Projet_ExpertsNovices/'];
+	
+	% Initial Paths
+	Path.ExcelPath=[Path.ExpertNovice, 'excel/'];
+	Path.importRaw=[Path.ExpertNovice, 'data/raw/'];
+	
     % Processed data
     Path.ProcessedData=[Path.ExpertNovice, 'ElaboratedData/'];
+	
+	Path.OSIMPath=[Path.ProcessedData, 'OpenSim/'];
+	
     Path.Matrices=[Path.ProcessedData, 'matrices/'];
-    Path.RepetitiveMMH=[Path.Matrices, 'RepetitiveMMH/'];
+    Path.Fatigue=[Path.Matrices, 'Fatigue/'];
+    Path.RepetitiveMMH=[Path.Fatigue, 'RepetitiveMMH/'];
+	Path.StandardEMG=[Path.Fatigue, 'StandardEMG/'];
+	
+	Path.GroupData=[Path.ProcessedData, 'GroupData/'];
+	Path.GroupFatigue = [Path.GroupData, 'Fatigue/'];
+	Path.GroupStandardEMG = [Path.GroupFatigue, 'StandardEMG/'];
     
-    %% Setup common OpenSim paths
-    Path.OpensimSetupJB=[Path.ServerAddressE '/Projet_ExpertsNovices/Jason/OpenSimSetUpFiles/'];
+    % Setup common OpenSim paths
+    Path.OpensimSetupJB=[Path.OSIMPath, 'OpenSimSetUpFiles/'];
     Path.OpensimGenericModel=[Path.OpensimSetupJB,'GenericShoulderCoRAnatoJB.osim'];
     Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
     Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];

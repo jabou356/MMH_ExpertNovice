@@ -1,7 +1,7 @@
 clear
 
 handdur=1.5*2000; %durée de transport de la boîte et déplacements: 1.5seconds * 2000 Hz
-
+threshold=0.03;
 %% Import generic paths
 GenericPath_EN
 
@@ -9,7 +9,7 @@ GenericPath_EN
 [~,Alias.pseudo,~]=xlsread([Path.ExpertNovice, 'participants.xlsx'],...
     'Information participant', 'E5:E100');
 
-for isujet = 1%length(Alias.pseudo):-1:1
+for isujet = 3%length(Alias.pseudo):-1:1
     
     load([Path.RepetitiveMMH, Alias.pseudo{isujet}, '.mat']);
     
@@ -34,7 +34,7 @@ for isujet = 1%length(Alias.pseudo):-1:1
         
         %% Identify each box handling
         % find instants when a box is handled
-        tempbox=find(sum(data(itrial).ftrigger,2)>0.02);
+        tempbox=find(sum(data(itrial).ftrigger,2)>threshold);
         
         % find the instant when a box is handle just before and after a 1 second gap 
         data(itrial).box(1,1)=tempbox(1);
