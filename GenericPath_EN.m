@@ -26,7 +26,7 @@ if Path.machinetype == 1 % If PC: backslashes
     Path.ExpertNovice=[Path.ServerAddressE, '\Projet_ExpertsNovices\'];
 	
 	% Initial Paths
-	Path.ExcelPath=[Path.ExpertNovice, 'excel\'];
+	Path.SubjectID=[Path.ExpertNovice, 'data\SubjectID.mat'];
 	Path.importRaw=[Path.ExpertNovice, 'data\raw\'];
 	
 	
@@ -66,7 +66,7 @@ elseif Path.machinetype == 2 %if MAC: forward slashes
     Path.ExpertNovice=[Path.ServerAddressE, '/Projet_ExpertsNovices/'];
 	
 	% Initial Paths
-	Path.ExcelPath=[Path.ExpertNovice, 'excel/'];
+	Path.SubjectID=[Path.ExpertNovice, 'data/SubjectID.mat'];
 	Path.importRaw=[Path.ExpertNovice, 'data/raw/'];
 	
     % Processed data
