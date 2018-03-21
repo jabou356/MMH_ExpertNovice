@@ -2,7 +2,7 @@ function data = rMMH_emg_compute (data,freq)  %(MVC,data,freq) Add MVC for real 
 %this function is mostly the same as emg_compute, but without time
 %normalization
 %% parameters
-param.bandfilter = [10,425]; % lower and upper freq
+param.bandfilter = [10,450]; % lower and upper freq
 param.lowfilter = nan;
 param.RMSwindow = 250 * freq / 1000 ;
 if mod(param.RMSwindow,2)==0 %if bin length is an even number
@@ -11,14 +11,14 @@ end
 
 %% treatment
 for itrial = length(data):-1:1
-    emg = data(itrial).emg;
+    emg = data{itrial}.emg;
     
     % 1) Rebase
     emg = emg - repmat(mean(emg),size(emg,1),1);
     
     % 2) band-pass filter
     [b, a]=butter(2, [param.bandfilter(1)/(freq/2) param.bandfilter(2)/(freq/2)]);
-    for imuscle=1:size(data(itrial).emg,2)
+    for imuscle=1:size(data{itrial}.emg,2)
         emg(:,imuscle)=filtfilt(b,a,emg(:,imuscle));
     end
     
@@ -46,8 +46,8 @@ for itrial = length(data):-1:1
     % 5) Normalization
    % emg = emg ./ (repmat(MVC/100,size(emg,1),1)); 
     
-    data(itrial).rmsEMG = RMS;
-    data(itrial).femg = femg;
+    data{itrial}.rmsEMG = RMS;
+    data{itrial}.femg = femg;
 
 
     clearvars emg RMS 
