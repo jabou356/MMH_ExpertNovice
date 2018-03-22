@@ -16,7 +16,9 @@ triggerChan = find(ismember(data{1}.emgname,SyncName));
 %% Using the first trial, determine the level of EMG expected when there is no box
 
 % locate silent periods in the data (periods without a box)
-clf
+
+close all
+figure
 MaxTrigChan = max(data{1,1}.rmsEMG(:,triggerChan),[],1);
 plot(data{1,1}.rmsEMG(:,triggerChan)./MaxTrigChan)
 hold on
@@ -45,6 +47,9 @@ BaselineSD = mean(BaselineSD);
 BaselineMean = mean(BaselineMean);
 
 for itrial = length(data):-1:1
+    clf
+    plot(data{1,itrial}.rmsEMG(:,triggerChan)./MaxTrigChan)
+    hold on
     
     EMGdetected = sum(data{1,itrial}.rmsEMG(:,triggerChan)./MaxTrigChan,2) > BaselineMean + nSD * BaselineSD;
     
@@ -73,20 +78,45 @@ for itrial = length(data):-1:1
     
     if falsegap
         for ifalse = 1:length(falsegap)
+                     
             boxbefore = find(data{1,itrial}.box(:,2) == data{1,itrial}.gap(falsegap(ifalse),1));
-            data{1,itrial}.box(boxbefore,2) = data{1,itrial}.box(boxbefore+1,2);
             
+            h(1) = plot(data{1,itrial}.box(boxbefore,:),repmat(0.5,2,1),'b');
+            h(2) = plot(data{1,itrial}.box(boxbefore+1,:),repmat(0.5,2,1),'r');
+            merge=menu('Do you want to merge those two boxes','Yes','No');
+            
+            if merge == 1
+                
+            data{1,itrial}.box(boxbefore,2) = data{1,itrial}.box(boxbefore+1,2);            
             data{1,itrial}.box(boxbefore+1,:) = nan;
             data{1,itrial}.box=data{1,itrial}.box(~isnan(data{1,itrial}.box(:,1)),:);
-        end
             
+            else
+                
+            falsegap(ifalse) = nan;
+            
+            end
+            
+            delete(h);
+        end
+        
+        falsegap = falsegap(~isnan(falsegap));
         data{1,itrial}.gap(falsegap,:) = nan; 
         data{1,itrial}.gap=data{1,itrial}.gap(~isnan(data{1,itrial}.gap(:,1)),:);
         
     end
         
-
-
+    for ibox = 1:size(data{1,itrial}.box,1)
+        x = data{1,itrial}.box(ibox,1):data{1,itrial}.box(ibox,2);
+        
+        % Don't time normalize femg because it is used for timeFreq analysis
+        data{1,itrial}.Partfemg{ibox} = data{1,itrial}.femg(x,:);
+        
+        % Time normalize rms data. Use a 3D matrix as the size is constant
+        % and it is easier to manipulate than cell array
+        rms = data{1,itrial}.rmsEMG(x,:);
+        data{1,itrial}.NormRMS(:,:,ibox) = interp1(1:length(x),rms,1:(length(x)-1)/99:length(x));
+    end
 
 
 end
