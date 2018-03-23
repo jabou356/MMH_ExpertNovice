@@ -1,4 +1,4 @@
-function [data] = TimeFreqEMG(data)
+function [data] = TimeFreqEMG(data,trials)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,15 +10,26 @@ function [data] = TimeFreqEMG(data)
     WaveNumber = 7 ; % Résolution temporelle
     Args = WaveletParameters(FreqMin,FreqMax,Resolution,WaveNumber,Freq) ;
     FreqRange = length(FreqMin:Resolution:FreqMax) ;
+    Nb_Interp_Pnts = 100; 
+
    % Nb_Interp_Pnts = 1 ; % Si 1 pas d'interpolation, sinon mettre le nombre de point désiré
     
-    for itrial = 1 : length(data)
-       Nb_Interp_Pnts = size(data{1,itrial}.femg,1); 
-        for imuscle = 1 : size(data{1,itrial}.femg,2)
+    for itrial = 1 : length(trials)
+        for imuscle = 1 : size(data{1,trials(itrial)}.femg,2)
             
-            if sum(isnan(data{1,itrial}.femg(:,imuscle))) == 0
-               [data{itrial}.TimeFreqEMG(:,:,imuscle), data{1,itrial}.Time, data{1,itrial}.Wave_FreqS]...
-                   = TimeFreqTransform(data{1,itrial}.femg(:,imuscle),Freq,Args,Nb_Interp_Pnts);
+            for ibox = 1:length(data{trials(itrial)}.Partfemg)
+             disp(['Processing trial: ' num2str(itrial) ' / ', num2str(length(trials)), ', muscle: ',...
+                 num2str(imuscle) ' / ', num2str(size(data{1,trials(itrial)}.femg,2))])
+             
+            if sum(isnan(data{1,trials(itrial)}.Partfemg{ibox}(:,imuscle))) == 0
+               [data{trials(itrial)}.TimeFreqEMG(:,:,imuscle,ibox), data{1,trials(itrial)}.Time, data{1,trials(itrial)}.Wave_FreqS]...
+                   = TimeFreqTransform(data{1,trials(itrial)}.Partfemg{ibox}(:,imuscle),Freq,Args,Nb_Interp_Pnts);
+               
+               data{trials(itrial)}.TFMedianFrequency(:,imuscle, ibox) = Compute_Median_Frequency(...
+                   data{trials(itrial)}.TimeFreqEMG(:,:,imuscle,ibox),data{1,trials(itrial)}.Wave_FreqS);
+                   
+            end
+            
             end
             
         end
