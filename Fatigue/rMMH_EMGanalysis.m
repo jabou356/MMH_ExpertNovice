@@ -7,7 +7,7 @@ GenericPath_EN
 load(Path.SubjectID);
 trialsForTimefreq = {'s_u'};
 
-for isujet = [18 19 21 24 25 26 29 30 31]%length(Alias.pseudo):-1:1
+for isujet = [31]%length(Alias.pseudo):-1:1
     
     %% Load data
     load([Path.RepetitiveMMH, Alias.pseudo{isujet}, '.mat']);
@@ -35,7 +35,7 @@ for isujet = [18 19 21 24 25 26 29 30 31]%length(Alias.pseudo):-1:1
 %             trialID.box = [trialID.box, 1:size(data{itrial}.box,1)];
 %             
 %             
-%             tovalidate = [tovalidate, squeeze(data{1,itrial}.NormRMS(:,imuscle,:))];
+%             t ovalidate = [tovalidate, squeeze(data{1,itrial}.NormRMS(:,imuscle,:))];
 %             
 %         end
 %         
