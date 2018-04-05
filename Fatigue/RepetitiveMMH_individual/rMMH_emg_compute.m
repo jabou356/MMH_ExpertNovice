@@ -2,7 +2,7 @@ function data = rMMH_emg_compute (data,freq)  %(MVC,data,freq) Add MVC for real 
 %this function is mostly the same as emg_compute, but without time
 %normalization
 %% parameters
-param.bandfilter = [10,450]; % lower and upper freq
+param.bandfilter = [20,450]; % lower and upper freq
 param.lowfilter = nan;
 param.RMSwindow = 250 * freq / 1000 ;
 if mod(param.RMSwindow,2)==0 %if bin length is an even number
