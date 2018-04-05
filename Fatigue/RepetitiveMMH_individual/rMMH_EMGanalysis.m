@@ -7,6 +7,7 @@ GenericPath_EN
 load(Path.SubjectID);
 trialsForTimefreq = {'s_u'};
 
+
 for isujet = [31]%length(Alias.pseudo):-1:1
     
     %% Load data
@@ -20,28 +21,28 @@ for isujet = [31]%length(Alias.pseudo):-1:1
 
     
     %% Partition data based on the presence of a box 
-    data = PartionRMMH(data, {'deltant', 'biceps'});
+    data = PartionRMMH(data, {'deltant', 'biceps','pect'});
     disp(['data partitionned: Subject # ', num2str(isujet), Alias.pseudo{isujet}]) 
 
     %% Clean data
-%     for imuscle = 1:size(data{1}.NormRMS,2)
-%         
-%         trialID.trial=[];
-%         trialID.box=[];
-%         
-%         tovalidate = [];
-%         for itrial = 1:length(data)
-%             trialID.trial = [trialID.trial,repmat(itrial,1, size(data{itrial}.box,1))];
-%             trialID.box = [trialID.box, 1:size(data{itrial}.box,1)];
-%             
-%             
-%             t ovalidate = [tovalidate, squeeze(data{1,itrial}.NormRMS(:,imuscle,:))];
-%             
-%         end
-%         
-%         data = clean_datarMMH(data,imuscle,Alias.pseudo{isujet},tovalidate,trialID);
-% 
-%     end 
+    for imuscle = 1:size(data{1}.NormRMS,2)
+        
+        trialID.trial=[];
+        trialID.box=[];
+        
+        tovalidate = [];
+        for itrial = 1:length(data)
+            trialID.trial = [trialID.trial,repmat(itrial,1, size(data{itrial}.box,1))];
+            trialID.box = [trialID.box, 1:size(data{itrial}.box,1)];
+            
+            
+            tovalidate = [tovalidate, squeeze(data{1,itrial}.NormRMS(:,imuscle,:))];
+            
+        end
+        
+        data = clean_datarMMH(data,imuscle,Alias.pseudo{isujet},tovalidate,trialID);
+
+    end 
         
     %% Process emg time-frequency
     for i = 1:length(trialsForTimefreq)
